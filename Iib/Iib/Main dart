@@ -1,0 +1,264 @@
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const NambiAI());
+}
+
+const gold = Color(0xFFD6B45C);
+const dark = Color(0xFF101010);
+const panel = Color(0xFF202020);
+
+class NambiAI extends StatelessWidget {
+  const NambiAI({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'NAMBI AI',
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: dark,
+        colorScheme: const ColorScheme.dark(
+          primary: gold,
+          secondary: gold,
+        ),
+      ),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int selectedIndex = 0;
+  final TextEditingController messageController =
+      TextEditingController();
+
+  final features = [
+    ('NAMBI Chat', 'Ask anything', Icons.chat_bubble_outline),
+    ('NAMBI Work', 'Office assistant', Icons.work_outline),
+    ('NAMBI Assess', 'Tests and practice', Icons.psychology_outlined),
+    ('NAMBI Learn', 'Learn anything', Icons.school_outlined),
+  ];
+
+  @override
+  void dispose() {
+    messageController.dispose();
+    super.dispose();
+  }
+
+  void showFeature(String name) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('$name – Coming soon')),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: dark,
+        elevation: 0,
+        title: const Row(
+          children: [
+            Icon(Icons.workspace_premium, color: gold, size: 30),
+            SizedBox(width: 10),
+            Text(
+              'NAMBI',
+              style: TextStyle(
+                color: gold,
+                fontSize: 23,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 3,
+              ),
+            ),
+            SizedBox(width: 7),
+            Text('AI', style: TextStyle(color: Colors.white)),
+          ],
+        ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: 18),
+            child: Icon(Icons.shield_outlined, color: gold),
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 20),
+              const Text(
+                'Hello! Welcome to NAMBI.',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Your Intelligence. Your Privacy.',
+                style: TextStyle(color: gold, fontSize: 15),
+              ),
+              const SizedBox(height: 28),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: panel,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: gold.withOpacity(0.5)),
+                ),
+                child: Column(
+                  children: [
+                    const Row(
+                      children: [
+                        Icon(Icons.auto_awesome, color: gold),
+                        SizedBox(width: 10),
+                        Text(
+                          'Ask NAMBI anything',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: messageController,
+                      minLines: 1,
+                      maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'Tamil or English...',
+                        filled: true,
+                        fillColor: dark,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide.none,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.arrow_upward, color: gold),
+                          onPressed: () {
+                            if (messageController.text.trim().isEmpty) {
+                              return;
+                            }
+                            showFeature('AI Chat');
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 30),
+              const Text(
+                'Explore NAMBI',
+                style: TextStyle(
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: features.length,
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  childAspectRatio: 1.25,
+                ),
+                itemBuilder: (context, index) {
+                  final item = features[index];
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(16),
+                    onTap: () => showFeature(item.$1),
+                    child: Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: panel,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: gold.withOpacity(0.35),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(item.$3, color: gold, size: 30),
+                          const SizedBox(height: 12),
+                          Text(
+                            item.$1,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            item.$2,
+                            style: const TextStyle(
+                              color: Colors.white60,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 25),
+              const Center(
+                child: Text(
+                  'NAMBI TECHNOLOGIES',
+                  style: TextStyle(
+                    color: gold,
+                    letterSpacing: 2,
+                    fontSize: 11,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: panel,
+        selectedItemColor: gold,
+        unselectedItemColor: Colors.white54,
+        currentIndex: selectedIndex,
+        onTap: (index) {
+          setState(() => selectedIndex = index);
+          if (index != 0) showFeature('Navigation');
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_outlined),
+            label: 'Settings',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'Profile',
+          ),
+        ],
+      ),
+    );
+  }
+}
